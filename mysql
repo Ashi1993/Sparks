@@ -1,0 +1,15 @@
+# cursor.execute("SELECT VERSION()")
+# data = cursor.fetchone()
+# print("Database version : %s " % data)
+
+
+# Fetch all the rows in a list of lists.
+   results = cursor.fetchall()
+   for row in results:
+      print(row)
+
+ query = "INSERT INTO books (bookID, bookName, Author, Summary) VALUES ('%d', '%s', '%s', '%s')" % (3, 'ලංකා ඉතිහාසය - ඕලන්ද යුගය', 'එස්. පි. පෙරේරා පියතුමා', 'ලංකා ඉතිහාසය - ඕලන්ද යුගය')
+   # Execute the SQL command
+   cursor.execute(query)
+   db.commit()
+   
