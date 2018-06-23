@@ -1,34 +1,15 @@
 # - *- coding: utf- 8 - *-
 import nltk
-import tensorflow as tf
 from nltk import sent_tokenize,word_tokenize
 
-def getSentLoc(text):
-    sentences = sent_tokenize(text)
-    weightL = {}
-    id = 1
-    for sentence in sentences:
-        total = len(sentences)
-        linear = (total - id + 1)/total
-        hyperbolic = (1/id)
-        if id < ((total + 1) / 2):
-            quadratic = 1 - ((2/(total - 1))*(id - 1))
-        elif id > ((total + 1) / 2):
-            quadratic = 1 - ((2 / (total - 1)) * (total - 1))
-        elif id == ((total + 1) / 2):
-            quadratic = 0.1
+def mean(numbers):
+    return float(sum(numbers)) / max(len(numbers), 1)
 
-        weightL[id] = {
-            "linear" : linear,
-            "hyperbolic" : hyperbolic,
-            "quadratic" : quadratic
-        }
-        id += 1
+def getSentLoc(sent, id, total):
+    weightL = (1/id)
 
-    n = 1
-    while n < len(weightL):
-        print(weightL[n])
-        n += 1
+    # print(weightL)
+
     return weightL
 
 # readPath = './D1test.txt'

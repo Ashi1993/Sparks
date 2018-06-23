@@ -19,12 +19,13 @@ docs = PlaintextCorpusReader(corpus_root, '.*')
 fields = docs.fileids()
 number_of_documents  = len(fields)
 
-def mapper(record):
+def mapper(key, value):
+    # print(record)
     # record : [doc_id, doc_contents]
     # key: document identifier
     # value: document contents
-    key = record[0]
-    value = record[1]
+    # key = record[0]
+    # value = record[1]
     max_freq = 0
     word_freq = defaultdict(int)
     words = value.split()
@@ -61,10 +62,10 @@ def reducer(key, list_of_values):
 # def createIndex(file):
 #     mr.execute(file, mapper, reducer)
 
-readpath = './InvertedIndex/big_input.txt'
-file = io.open(readpath, 'r', encoding = "utf16")
-text = file.read()
+readpath = './InvertedIndex/big_input.json'
+with open(readpath,"r",encoding = "utf16") as f:
+    data = f.read()
 # print(text)
-mr.execute(text, mapper, reducer)
+mr.execute(data, mapper, reducer)
 
   

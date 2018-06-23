@@ -1,35 +1,14 @@
 # - *- coding: utf- 8 - *-
 import nltk
-import tensorflow as tf
 from nltk import sent_tokenize,word_tokenize
 
-def getParaLoc(text):
-    sentences = sent_tokenize(text)
-    weightP = {}
-    id = 1
+def mean(numbers):
+    return float(sum(numbers)) / max(len(numbers), 1)
 
-    for sentence in sentences:
-        total = len(sentences)
-        linear = (total - id + 1)/total
-        hyperbolic = (1/id)
-        if id < ((total + 1) / 2):
-            quadratic = 1 - ((2/(total - 1))*(id - 1))
-        elif id > ((total + 1) / 2):
-            quadratic = 1 - ((2 / (total - 1)) * (total - 1))
-        elif id == ((total + 1) / 2):
-            quadratic = 0.1
+def getParaLoc(para, id, total):
+    weightP = (total - id + 1)/total
+    # print(weightP)
 
-        weightP[id] = {
-            "linear" : linear,
-            "hyperbolic" : hyperbolic,
-            "quadratic" : quadratic
-        }
-        id += 1
-
-    n = 1
-    while n < len(weightP):
-        print(weightP[n])
-        n += 1
     return weightP
 
 # readPath = './D1test.txt'

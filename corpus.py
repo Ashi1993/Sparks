@@ -1,51 +1,37 @@
-# - *- coding: utf- 8 - *-
-import nltk
-from nltk import sent_tokenize, word_tokenize
+import glob
+import json
 from nltk.corpus import PlaintextCorpusReader
-import re
 
-corpus_root = './UCSC Sinhala Tagged Corpus V1/UCSC Sinhala Tagged Corpus V1'
-wordlists = PlaintextCorpusReader(corpus_root, '.*')
 
-fields = wordlists.fileids()
-#print(fields)
+corpus_root = './Data/books'
+docs = PlaintextCorpusReader(corpus_root, '.*')
 
-readPath = './corpus.txt'
-corpus_file = open(readPath,'w',encoding="utf16")
+writePath = './InvertedIndex/big_input.json'
+write_file = open(writePath,'r',encoding="utf16")
 
-x=0
-for n in fields:
-    readpath = './UCSC Sinhala Tagged Corpus V1/UCSC Sinhala Tagged Corpus V1/'+n
-    #print(readpath)
-    read_file = open(readpath, 'r', encoding="utf16")
+
+for f in docs.fileids():
+    record = {}
+    readPath = './Data/books/' + f
+    # print(readPath)
+    read_file = open(readPath, 'r', encoding="utf16")
     file = read_file.read()
-    match = re.split(r'<[/ A-Z a-z][A-Z a-z 0-9]*>', file)
-    #print(match)
+    record[f] = file
 
-    text = []
-    finalCorpus = {}
-    for n in match:
-        if n == "\n" or n == "\n\n" or n == '' or n == "\ufeff":
-            continue
-        else:
-            text.append(n)
-            lines = n.splitlines()
-            for a in lines:
-                if a == '':
-                    continue
-                else:
-                    splitted = n.split(" ")
-                    for split in splitted:
-                        entry = split.split("_")
-                        if len(entry)>1:
-                            #print(entry[0])
-                            key = entry[0]
-                            value = entry[1]
-                            finalCorpus[key] = value
-                            corpus_file.write(key+"\n")
-                        else:
-                            continue
-x+=1
+print(record)
 
-#print(finalCorpus)
+data = json.dumps(record)
+print(type(data))
+print(data)
 
+with open ("./InvertedIndex/big_input.json", 'w', encoding="utf16") as input:
+    input.write(data)
+    
+#
+# read_files = glob.glob("./Data/books/*.txt")
+# print(read_files)
+# for f in read_files:
+#     input = open (f, 'r', encoding="utf16")
+#     contents = input.read()
+#     record = [f, contents]
+#     print(json.dumps(record))

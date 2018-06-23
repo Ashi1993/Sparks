@@ -33,6 +33,8 @@ ngram_list = {}
 
 def checkWordSimilarity(file):
     # print(file)
+    stemwords_list = {}
+    word_cluster = {}
     list1 = word_tokenize(file)
     list = removestopwords(list1)
     for word in list:
@@ -52,37 +54,58 @@ def checkWordSimilarity(file):
                 # print(word + " " + k)
         ngram_list[word] = output
 
-    stem1 = {'අයිති': 'අයිතිව', 'පෘතුගිසි': 'පෘතුගීසි', 'පදිංචිව': 'පදිංචි', 'කෘරතර': 'කෘර', 'මල්වාණට': 'මල්වාණ', 'මල්වාණ': 'මල්වාණේ'}
-
-
-    # stem1 = {'value':'values', 'valued':'value', 'list':'lists', 'lists':'listed', 'word':'words', 'key':'keys'}
 
     for k,v in stemwords_list.items():
+        # print(k +" "+v)
         k_exist = word_cluster.get(k, "key")
+        # print("k_exist")
+        # print(k_exist)
         if k_exist != "key":
             if v not in k_exist:
                 k_exist.append(v)
+                # print("k_exist")
+                # print(k_exist)
 
         else:
             v_exist = word_cluster.get(v, "key")
+            # print("v_exist")
+            # print(v_exist)
             if v_exist != "key":
                 if k not in v_exist:
                     v_exist.append(k)
+                    # print("v_exist")
+                    # print(v_exist)
             else:
-                word_cluster[k] = [v]
+                nk = len(ngram_list[k])
+                nv = len(ngram_list[v])
+                if nk > nv:
+                    word_cluster[v] = [k]
+                else:
+                    word_cluster[k] = [v]
+                # print(word_cluster)
+
+    # print(ngram_list)
+    # print(ngram_list["ආණ්ඩුව"])
+    # print(ngram_list["ආණ්ඩුවේ"])
+    # print(stemwords_list)
+    # print("\n\n")
+    # print(word_cluster)
+
+    return word_cluster
 
 
-corpus_root = './Data/Data'
-docs = PlaintextCorpusReader(corpus_root, '.*')
-fields = docs.fileids()
+# corpus_root = './Data/Data'
+# docs = PlaintextCorpusReader(corpus_root, '.*')
+# fields = docs.fileids()
+#
+# for doc in fields:
+#     # readPath = './Data/Data/' + doc
+#     readPath = './Data/Data/කෝට්ටේ නරපතීන් සහ පෘතුගීසීහු.txt'
+#     read_file = open(readPath, 'r', encoding="utf16")
+#     file = read_file.read()
+#     checkWordSimilarity(file)
 
-for doc in fields:
-    readPath = './Data/Data/' + doc
-    # readPath = './Data/Data/කෝට්ටේ නරපතීන් සහ පෘතුගීසීහු.txt'
-    read_file = open(readPath, 'r', encoding="utf16")
-    file = read_file.read()
-    checkWordSimilarity(file)
-
-print(ngram_list)
-print(stemwords_list)
-print(word_cluster)
+# readPath = './Data/books/සංක්ෂිප්ත ලංකා ඉතිහාසය 2.txt'
+# read_file = open(readPath, 'r', encoding="utf16")
+# file = read_file.read()
+# checkWordSimilarity(file)

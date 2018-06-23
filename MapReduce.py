@@ -14,9 +14,11 @@ class MapReduce:
 
     def execute(self, data, mapper, reducer):
         # print(data)
-        for line in data:
-            record = json.loads(line)
-            mapper(record)
+        record = json.loads(data)
+        print("record")
+        print(record)
+        for k, v in record.items():
+            mapper(k,v)
 
         for key in self.intermediate:
             reducer(key, self.intermediate[key])

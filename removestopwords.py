@@ -19,6 +19,7 @@ def removestopwords(words):
     i = 0
     while i < total:
         if words[i]  not in sortedwords:
+
             wordswithoutstopwords.append(words[i])
             #print("if")
         i += 1
